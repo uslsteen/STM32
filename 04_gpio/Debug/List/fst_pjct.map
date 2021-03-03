@@ -1,0 +1,169 @@
+###############################################################################
+#
+# IAR ELF Linker V8.30.1.114/W32 for ARM                  03/Mar/2021  23:40:46
+# Copyright 2007-2018 IAR Systems AB.
+#
+#    Output file  =  D:\prjcts\Debug\Exe\fst_pjct.out
+#    Map file     =  D:\prjcts\Debug\List\fst_pjct.map
+#    Command line =  
+#        -f C:\Users\dauga\AppData\Local\Temp\EW2FC7.tmp
+#        (D:\prjcts\Debug\Obj\main.o --no_out_extension -o
+#        D:\prjcts\Debug\Exe\fst_pjct.out --redirect _Printf=_PrintfFullNoMb
+#        --redirect _Scanf=_ScanfFullNoMb --map
+#        D:\prjcts\Debug\List\fst_pjct.map --config
+#        E:\arm\config\linker\ST\stm32f051x8.icf --semihosting --entry
+#        __iar_program_start --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, and there are calls to deallocation functions in the
+application.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at 0x800'0000 { ro section .intvec };
+"P1":  place in [from 0x800'0000 to 0x800'ffff] { ro };
+define block CSTACK with size = 2K, alignment = 8 { };
+define block HEAP with size = 2K, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2000'1fff] {
+          rw, block CSTACK, block HEAP };
+
+No sections matched the following patterns:
+
+  rw  in "P2"
+
+
+  Section   Kind         Address   Size  Object
+  -------   ----         -------   ----  ------
+"A0":                              0x40
+  .intvec   ro code   0x800'0000   0x40  vector_table_M.o [3]
+                    - 0x800'0040   0x40
+
+"P1":                             0x130
+  .text     ro code   0x800'0040   0xd8  main.o [1]
+  .text     ro code   0x800'0118   0x1e  cmain.o [3]
+  .text     ro code   0x800'0136    0x4  low_level_init.o [2]
+  .text     ro code   0x800'013a    0x8  exit.o [2]
+  .text     ro code   0x800'0142    0x2  vector_table_M.o [3]
+  .text     ro code   0x800'0144    0xa  cexit.o [3]
+  .text     ro code   0x800'0150   0x14  exit.o [4]
+  .text     ro code   0x800'0164    0xc  cstartup_M.o [3]
+                    - 0x800'0170  0x130
+
+"P2":                             0x800
+  CSTACK             0x2000'0000  0x800  <Block>
+    CSTACK  uninit   0x2000'0000  0x800  <Block tail>
+                   - 0x2000'0800  0x800
+
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+   0x800'0170   0x800'ffff  0xfe90
+  0x2000'0800  0x2000'1fff  0x1800
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module            ro code  rw data
+    ------            -------  -------
+command line/config:
+    ----------------------------------
+    Total:
+
+D:\prjcts\Debug\Obj: [1]
+    main.o                216
+    ----------------------------------
+    Total:                216
+
+dl6M_tln.a: [2]
+    exit.o                  8
+    low_level_init.o        4
+    ----------------------------------
+    Total:                 12
+
+rt6M_tl.a: [3]
+    cexit.o                10
+    cmain.o                30
+    cstartup_M.o           12
+    vector_table_M.o       66
+    ----------------------------------
+    Total:                118
+
+shb_l.a: [4]
+    exit.o                 20
+    ----------------------------------
+    Total:                 20
+
+    Gaps                    2
+    Linker created               2 048
+--------------------------------------
+    Grand Total:          368    2 048
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address  Size  Type      Object
+-----                       -------  ----  ----      ------
+?main                    0x800'0119        Code  Gb  cmain.o [3]
+CSTACK$$Base            0x2000'0000         --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'0800         --   Gb  - Linker created -
+LL_AHB1_GRP1_EnableClock
+                         0x800'0041  0x16  Code  Lc  main.o [1]
+LL_GPIO_IsInputPinSet    0x800'0073  0x14  Code  Lc  main.o [1]
+LL_GPIO_ResetOutputPin   0x800'008b   0x4  Code  Lc  main.o [1]
+LL_GPIO_SetOutputPin     0x800'0087   0x4  Code  Lc  main.o [1]
+LL_GPIO_SetPinMode       0x800'0057  0x1c  Code  Lc  main.o [1]
+Region$$Table$$Base             0x0         --   Gb  - Linker created -
+Region$$Table$$Limit            0x0         --   Gb  - Linker created -
+__ICFEDIT_region_RAM_end__ {Abs}
+                        0x2000'1fff        Data  Gb  <internal module>
+__ICFEDIT_region_RAM_start__ {Abs}
+                        0x2000'0000        Data  Gb  <internal module>
+__cmain                  0x800'0119        Code  Gb  cmain.o [3]
+__exit                   0x800'0151  0x14  Code  Gb  exit.o [4]
+__iar_program_start      0x800'0165        Code  Gb  cstartup_M.o [3]
+__low_level_init         0x800'0137   0x4  Code  Gb  low_level_init.o [2]
+__vector_table           0x800'0000        Data  Gb  vector_table_M.o [3]
+_call_main               0x800'0125        Code  Gb  cmain.o [3]
+_exit                    0x800'0145        Code  Gb  cexit.o [3]
+_main                    0x800'0133        Code  Gb  cmain.o [3]
+delay_10ms               0x800'008f  0x10  Code  Gb  main.o [1]
+exit                     0x800'013b   0x8  Code  Gb  exit.o [2]
+gpio_config              0x800'009f  0x2c  Code  Gb  main.o [1]
+main                     0x800'00cb  0x42  Code  Gb  main.o [1]
+
+
+[1] = D:\prjcts\Debug\Obj
+[2] = dl6M_tln.a
+[3] = rt6M_tl.a
+[4] = shb_l.a
+
+    368 bytes of readonly  code memory
+  2 048 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

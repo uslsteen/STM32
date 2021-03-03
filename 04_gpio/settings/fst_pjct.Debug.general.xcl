@@ -1,0 +1,15 @@
+"E:\arm\bin\armproc.dll" 
+
+"E:\arm\bin\armstlink2.dll" 
+
+"D:\prjcts\Debug\Exe\fst_pjct.out" 
+
+--plugin="E:\arm\bin\armbat.dll" 
+
+--device_macro="E:\arm\config\debugger\ST\STM32F0xx.dmac" 
+
+--flash_loader="E:\arm\config\flashloader\ST\FlashSTM32F05xx8.board" 
+
+
+
+
