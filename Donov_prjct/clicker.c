@@ -17,10 +17,10 @@ void gpio_config( void )
 {
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOC);
-  
+
   LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_9, LL_GPIO_MODE_OUTPUT);
   LL_GPIO_SetPinMode(GPIOC, LL_GPIO_PIN_8, LL_GPIO_MODE_OUTPUT);
-  
+
   // GPIOB init
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
   LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);
@@ -48,7 +48,7 @@ uint16_t show_digit( uint32_t digit )
   0x0200, // segment F - 5
   0x0010, // segment G - 6
   };
-  
+
   switch (digit)
   {
   case 0:
@@ -88,7 +88,7 @@ uint16_t get_hell_sym( uint8_t sym )
   0x0200, // segment F - 5
   0x0010, // segment G - 6
   };
-  
+
   switch (sym)
   {
   case 'H':
@@ -104,13 +104,13 @@ uint16_t get_hell_sym( uint8_t sym )
   case '.':
     return 0x0004;
   case 'A':
-    return s[0] | s[1] | s[2] | s[6] | s[4] | s[5];      
+    return s[0] | s[1] | s[2] | s[6] | s[4] | s[5];
   case 'U':
     return s[2] | s[3] | s[4] | s[1] | s[5];
   case 'C':
     return s[0] | s[3] | s[4] | s[5];
   case 'S':
-    return s[0] | s[6] | s[2] | s[6] | s[5] | s[3];  
+    return s[0] | s[6] | s[2] | s[6] | s[5] | s[3];
   case 'I':
     return s[4] | s[5];
   case ' ':
@@ -126,12 +126,12 @@ void show_hell( uint32_t cnt )
   uint16_t pos[] = {
     0x01A0, 0x08A0, 0x0920, 0x0980
   };
-  
+
   static int i = 0;
   uint16_t dot_flag = 0;
-  
+
   uint8_t sym_pos = (cnt + i) % size;
-  
+
   /* Check if the first symbol is a dot */
   if (string[sym_pos] == '.' && i == 0)
   {
@@ -139,7 +139,7 @@ void show_hell( uint32_t cnt )
     sym_pos = (cnt + i) % size;
     i = (i + 1) % 4;
   }
-  
+
   uint16_t pos_mask = pos[i];
   /* skip dot symbol if it is next */
   /* but not skip if the pre dot symbol on the right edge panel */
@@ -149,28 +149,28 @@ void show_hell( uint32_t cnt )
       i = (i + 1) % 4;
     dot_flag = 0x0004;
   }
-  
+
   LL_GPIO_WriteOutputPort(GPIOB, get_hell_sym(string[sym_pos]) | dot_flag | pos_mask);
-  
+
   dot_flag = 0;
-  
+
   i = (i + 1) % 4;
 }
 
 void show_number( uint32_t num )
 {
-  uint16_t res[4] = 
+  uint16_t res[4] =
   {
     [0] = show_digit(num % 10) | 0x0980,
     [1] = show_digit(num / 10 % 10) | 0x0920,
     [2] = show_digit(num / 100 % 10) | 0x08A0,
     [3] = show_digit(num / 1000 % 10) | 0x01A0,
   };
-  
+
   static int i = 0;
-  
+
   LL_GPIO_WriteOutputPort(GPIOB, res[i]);
-  
+
   i = (i + 1) % 4;
 }
 
@@ -179,11 +179,11 @@ void show_number( uint32_t num )
 #define CLICKER
 
 int main( void )
-{ 
+{
   gpio_config();
   uint32_t counter = 0, is_pressed = 0, is_on = 0;
   uint32_t n = 0;
-  
+
   while (1)
   {
 #ifdef NO_NOISE
@@ -191,16 +191,16 @@ int main( void )
     /* Check if button pressed */
     if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_0))
     {
-      is_pressed = 1; 
+      is_pressed = 1;
       counter = 0; /* reset counter */
     }
-   
+
     if (is_pressed)
     {
       counter++;
       delay10();
     }
-    
+
     if (counter >= 5)
     {
       if (is_on)
@@ -215,15 +215,15 @@ int main( void )
       }
       // change state
       is_on = 1 - is_on;
-    
+
       //LL_GPIO_WriteOutputPort(GPIOB, 0x0000);
       ++n;
-      
+
       is_pressed = 0;
       counter = 0;
     }
 #else
-     if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_0)) 
+     if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_0))
      {
        if (is_on)
         {
@@ -243,14 +243,14 @@ int main( void )
 #endif
      }
 #endif
-    
+
 #ifdef CLICKER
     show_number(n);
 #else
     for (int i = 0; i < 20000; ++i)
       show_hell(n);
     n++;
-    
+
 #endif
   }
 }
