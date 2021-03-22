@@ -1,0 +1,212 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[14pt]{extsizes}
+\usepackage[russian]{babel}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\graphicspath{{pictures/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage[usenames]{color}
+\usepackage{colortbl}
+\usepackage[hidelinks]{hyperref,xcolor}
+\usepackage{setspace,amsmath}
+\usepackage{indentfirst}
+
+\begin{document}
+	\begin{titlepage}
+			\begin{center}
+				\large 	Московский физико-технический институт \\
+				Физтех-школа радиотехники и компьютерных технологий \\
+				\vspace{0.2cm}
+				
+				\vspace{4.5cm}
+				\large (Микроконтроллеры) \\ \vspace{0.2cm}
+				\LARGE \textbf{Morse-talk}
+			\end{center}
+			\vspace{2.3cm} \large
+			
+			\begin{center}
+				Работу выполнили: \\
+				Руденко Варвара, Б01-901\\
+				Шакирзянов Искандер, Б01-902
+				\vspace{10mm}		
+				
+			\end{center}
+			
+			\begin{center} \vspace{50mm}
+				г. Долгопрудный \\
+				2021 год
+			\end{center}
+		\end{titlepage}
+		
+\section{Цель:}
+При помощи двух микроконтроллеров научиться принимать, передавать в зашифрованном виде, принимать и выводить на экран текстовые сообщения.
+\section{Встретившиеся трудности:}
+При работе с проектом встретили некоторые проблемы: для набора некоторого сообщения, человек должен обладать чувством ритма, ввиду взаимосвязи набираемой буквы от длительности удержания пользовательской кнопки.
+\section{Схема установки:}
+2 микроконтроллера STM32F051 на отладочной плате, oled-дисплей, макетные платы, провода
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/1}}
+	\end{figure}
+\newpage
+\section{Отладочная плата STM32F0DISCOVERY:}
+	\begin{itemize}
+		\item Микроконтроллер STM32F051R8T6, до 48 МГц, 64 KB Flash, 8 KB RAM, корпус LQFP64
+Встроенный эмулятор-отладчик ST-LINK/V2
+		\item Питание платы осуществляется двумя способами: через USB и через внешний источник
+питания
+		\item Напряжение питание от внешнего источника 3 В и 5 В
+		\item 4 светодиода: питание 3 В, USB соединение, вывод PC8 и вывод PC9
+		\item 2 кнопки: Пользовательская и Reset
+	\end{itemize}
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/2}}
+	\end{figure}
+\newpage
+\section{Микроконтроллер STM32F051R8T6:}
+STM32F051R8T6 - это микроконтроллер, включающий в себя высокопроизводительное 32-разрядное RISC-ядро ARM Cortex-M0, работающее на частоте 48 МГц, высокоскоростные встроенные запоминающие устройства и широкий спектр расширенных периферийных устройств и систем ввода-вывода. Все устройства предлагают стандартные коммуникационные интерфейсы: один 12-битный АЦП, один 12-битный ЦАП, шесть 16-битных таймеров, один 32-битный таймер и ШИМ-таймер с расширенным управлением.
+	\begin{itemize}
+		\item CRC calculation unit
+		\item 4 to 32MHz Crystal oscillator
+		\item 32kHz Oscillator for RTC with calibration
+		\item Internal 8MHz RC with x6 PLL option
+		\item Internal 40kHz RC oscillator
+		\item 0 to 3.6V Conversion range
+		\item 2.4 to 3.6V Separate analogue supply
+		\item Independent and system watchdog timers
+		\item SysTick timer
+		\item Communication interfaces
+		\item HDMI CEC, Wakeup on header reception
+		\item Serial wire debug (SWD)
+		\item 96-bit Unique ID
+	\end{itemize}
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/3}}
+	\end{figure}
+\newpage
+\section{Принцип работы:}
+Transmitter – блок, принимающий от пользователя тектсовую информацию в виде сообщения зашифрованного азбукой Морзе, высвечивающий светодиодом считанное сообщение(для понимания, что мы отправляем), шифрующий с помощью кодового слова и передающий сообщение через USART. Для этого берется слово (в нашем примере это microcontroller), убираются повторяющиеся буквы и ставятся в начало алфавита, а после идут оставшиеся. В файле "decoder.txt" находится конфигурационные данные для шифровки/дешифровки. 
+Reciever – блок, принимающий информацию через USART, дешифрующий ее и выводящий на oled-дисплей сообщение.
+\section{Reciever:}
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/5}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/6}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/7}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/8}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=7cm]{pic/9}}
+	\end{figure}
+	\newpage
+\section{Transmitter:}
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/10}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/11}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/12}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/13}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/14}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/15}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/16}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/17}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/18}}
+	\end{figure}
+	\newpage
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/19}}
+	\end{figure}
+	\newpage
+	
+\section{decoder.txt}
+DECODE('A','M', 12)\\
+
+DECODE('B','I', 2111)\\
+
+DECODE('C','C', 2121)\\
+
+DECODE('D','R', 211)\\
+
+DECODE('E','O', 1)\\
+
+DECODE('F','N', 1121)\\
+
+DECODE('G','T', 221)\\
+
+DECODE('H','L', 1111)\\
+
+DECODE('I','E', 11)\\
+
+DECODE('J','A', 1222)\\
+
+DECODE('K','B', 212)\\
+
+DECODE('L','D', 1211)\\
+
+DECODE('M','F', 22)\\
+
+DECODE('N','G', 21)\\
+
+DECODE('O','H', 222)\\
+
+DECODE('P','J', 1221)\\
+
+DECODE('Q','K', 2212)\\
+
+DECODE('R','P', 121)\\
+
+DECODE('S','Q', 111)\\
+
+DECODE('T','S', 2)\\
+
+DECODE('U','U', 112)\\
+
+DECODE('V','V', 1112)\\
+
+DECODE('W','W', 122)\\
+
+DECODE('X','X', 2112)\\
+
+DECODE('Y','Y', 2122)\\
+
+DECODE('Z','Z', 2211)\\
+
+%*********	
+	
+	\begin{figure}[h!]
+		\center{\includegraphics[width=15cm]{pic/4}}
+	\end{figure}
+\newpage
+\end{document}
