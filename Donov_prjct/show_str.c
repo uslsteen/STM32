@@ -197,19 +197,20 @@ void Show()
     {
       counter++; 
       delay_10ms();
+    }
         
-      if (counter >= 5)
-      {
-        LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_8);
+    if (counter >= 5)
+    {
+      LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_8);
         
 #if 0
-        LL_GPIO_WriteOutputPort(GPIOB, Hello_people('L'));
+      LL_GPIO_WriteOutputPort(GPIOB, Hello_people('L'));
 #endif
         
-        while(1)
-          Show();
-      }
-    }
+       while(1)
+       Show();
+     }
+   
     else
       LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_8);
   } 
