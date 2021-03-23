@@ -1,13 +1,18 @@
-
 \begin{verbatim}
     
-    
+  Рассмотрим написанную нами программу. Для начала подключаем необходимые заголовочные файлы:
+      
   #include "libs/stm32f0xx_ll_rcc.h"
   #include "libs/stm32f0xx_ll_system.h"
   #include "libs/stm32f0xx_ll_bus.h"
   #include "libs/stm32f0xx_ll_gpio.h"
   
+  \end{verbatim}
   
+  Также для работы потребуются функции, организующие задержки. Наиболее простой вариант - реализовать простой холостой цикл.
+  
+  \begin{verbatim}
+      
   void delay()
   {
     for (int i = 0; i < 600000; ++i)
@@ -22,7 +27,11 @@
       return;
   }
   
+  \end{verbatim}
   
+  Заведем массив из констант, которые будут отвечать за конкретные пины. 
+  \begin{verbatim}
+      
   uint16_t sgmnts[7] =
   { 
     LL_GPIO_PIN_0, // E - segment 0
@@ -34,6 +43,12 @@
     LL_GPIO_PIN_10, // A - segment 6
   };
   
+  \end{verbatim}
+  
+  Организуем функцию для вывода конкретного числа с использованием выше определенного массива $sgmnts$
+  
+  \begin{verbatim}
+      
   uint16_t Show_digit(uint32_t digit)
   {
        switch (digit)
@@ -76,7 +91,12 @@
        }
   }
   
+  \end{verbatim}
   
+  Далее идет функция для реализации динамического дисплея. Суть заключается в том, что мы выводим одно конкретное 4-х значное число на дислпей индикатора с помощью $Show\_digit(...)$, а затем в цикле осуществляем итерацию и переходим к следующему разряду/цифре.
+  
+  \begin{verbatim}
+      
   void dyn_display(uint16_t num)
   {
     while(1)
@@ -92,8 +112,7 @@
       };
       
       static int digit_num = 0;
-     
-   
+    
       LL_GPIO_WriteOutputPort(GPIOB, result[digit_num]); 
       delay();
       
@@ -102,8 +121,12 @@
       return;
   }
   
+  \end{verbatim}
   
+  Организуем функцию для вывода конкретной буквы с использованием выше определенного массива $sgmnts$
   
+  \begin{verbatim}
+      
   uint16_t Hello_people(uint8_t symbol)
   {
     switch(symbol)
@@ -128,7 +151,12 @@
     }
   }
   
+  \end{verbatim}
   
+  Главная функция - вывод бегущей строки. По сути все то же самое, что и у $dyn\_display(...)$. Разве что стоит отметить чуть более сложную работу с массивом $char$'ов.
+  
+  \begin{verbatim}
+      
   void Show_str( uint32_t cnt )
   {
     static int i = 0;
@@ -147,7 +175,12 @@
     i = (i + 1) % 4;
   }
   
+  \end{verbatim}
   
+  Напишем функцию, реализующую подачу тактирование на модуль порта $GPIO$. Настроим непосредственно выводы со светодиодами в режим цифровой выход.
+  
+  \begin{verbatim}
+      
   void gpio_config()
   {  
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA); 
@@ -177,6 +210,11 @@
     return;
   }
   
+  \end{verbatim}
+  
+  Вспомогательная функция для вывода бегущей строки.
+  \begin{verbatim}
+      
   void Show()
   {
     static uint32_t n = 0;
@@ -186,6 +224,13 @@
     
     n++;
   }
+  
+  \end{verbatim}
+  
+  
+  Главная функция программы с реализацией антидребезга:
+  
+  \begin{verbatim}
   
    int main()
   {
@@ -212,10 +257,6 @@
       {
         LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_8);
           
-  #if 0
-        LL_GPIO_WriteOutputPort(GPIOB, Hello_people('L'));
-  #endif
-          
          while(1)
          Show();
        }
@@ -225,7 +266,6 @@
     } 
     
     return 0;
-  
   }
   
   
