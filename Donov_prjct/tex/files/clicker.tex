@@ -123,6 +123,7 @@
   
   void show_hell( uint32_t cnt )
   {
+<<<<<<< HEAD
     uint8_t string[] = "HELP US PLEASE.";
     uint16_t size = sizeof(string) / sizeof(char) - 1;
     uint16_t pos[] = {
@@ -136,6 +137,11 @@
     
     /* Check if the first symbol is a dot */
     if (string[sym_pos] == '.' && i == 0)
+=======
+    // 1 - on, 0 - off
+    /* Check if button pressed */
+    if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_0))
+>>>>>>> fc7c39b4b85ec6921221a050c35e0eba47ec5623
     {
       cnt = (cnt + 1) % size;
       sym_pos = (cnt + i) % size;
@@ -203,9 +209,18 @@
         delay10();
       }
       
+<<<<<<< HEAD
       if (counter >= 5)
       {
         if (is_on)
+=======
+      is_pressed = 0;
+      counter = 0;
+    }
+     if (LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_0)) 
+     {
+       if (is_on)
+>>>>>>> fc7c39b4b85ec6921221a050c35e0eba47ec5623
         {
           LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_9);
           LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_8);
@@ -217,6 +232,7 @@
         }
         // change state
         is_on = 1 - is_on;
+<<<<<<< HEAD
       
         //LL_GPIO_WriteOutputPort(GPIOB, 0x0000);
         ++n;
@@ -255,6 +271,21 @@
       
   #endif
     }
+=======
+
+        LL_GPIO_WriteOutputPort(GPIOB, 0x0000);
+        ++n;
+
+     }
+    
+
+    show_number(n);
+
+    for (int i = 0; i < 20000; ++i)
+      show_hell(n);
+    n++;
+
+>>>>>>> fc7c39b4b85ec6921221a050c35e0eba47ec5623
   }
   
   \end{verbatim}
